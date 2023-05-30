@@ -1,63 +1,49 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import Header from './Header'
 import Footer from './Footer'
 import Note from './Note'
 import CreateArea from './CreateArea'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 function App() {
-  const [data, setData] = useState([])
+  const [data, setData] = useState([
+    {
+      id: 1,
+      title: 'Title',
+      content: 'Content',
+    },
+  ])
 
   function handleAdd(input) {
-    let uniqueId = uuidv4()
-    try {
-      setData((previousValues) => {
-        return [
-          ...previousValues,
-          {
-            key: uniqueId,
-            id: uniqueId,
-            ...input,
-          },
-        ]
-      })
-    } catch (error) {
-      console.log(error)
-    }
+    const uniqueId = uuidv4()
+    setData((previousValues) => [
+      ...previousValues,
+      {
+        id: uniqueId,
+        ...input,
+      },
+    ])
   }
 
-  function handleChange(event) {}
-
-  function TestFunction() {
-    // console.log(data)
+  function handleDel(ID) {
+    setData((previousValues) =>
+      previousValues.filter((dataPoint) => dataPoint.id !== ID),
+    )
   }
-  useEffect(() => {
-    console.log
-  }, [data])
 
   return (
     <div>
       <Header />
-      <CreateArea Add={handleAdd} onInputChange={handleChange} />
-      {/* {notesList.map((note) => {
-        return (
-          <Note
-            key={uuid}
-            id={uuid}
-            title={note.title}
-            content={note.content}
-          />
-        )
-      })} */}
-      {/* <Note key={1} id={1} title="1st title" content="1st content" /> */}
-      <button
-        onClick={() => {
-          console.log('hello')
-        }}
-      >
-        {' '}
-        Test Button
-      </button>
+      <CreateArea Add={handleAdd} />
+      {data.map((data) => (
+        <Note
+          key={data.id}
+          id={data.id}
+          title={data.title}
+          content={data.content}
+          delFunction={handleDel}
+        />
+      ))}
       <Footer />
     </div>
   )

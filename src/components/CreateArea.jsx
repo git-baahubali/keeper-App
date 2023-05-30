@@ -2,16 +2,17 @@ import React, { useState,useEffect } from 'react'
 
 function CreateArea(props) {
   const [input, setInput] = useState({ title: '', content: '' })
-  useEffect(() => {
-    console.log(input);
+  // useEffect(() => {
+  //   console.log(input);
     
-  }, [input]);
+  // }, []);
   return (
     <div>
       <form>
         <input
           name="title"
           placeholder="Title"
+          value={input.title}
           onChange={(event) => {
             let { name, value } = event.target
             if (name == 'title') {
@@ -25,6 +26,7 @@ function CreateArea(props) {
           name="content"
           placeholder="Take a note..."
           rows="3"
+          value={input.content}
           onChange={(event) => {
             let { name, value } = event.target
             if (name == 'content') {
@@ -34,7 +36,9 @@ function CreateArea(props) {
             }
           }}
         />
-        <button onClick={()=>{props.Add(input)}}>Add</button>
+        <button onClick={(event)=>{
+          event.preventDefault()
+          return props.Add(input)}}>Add</button>
       </form>
     </div>
   )
